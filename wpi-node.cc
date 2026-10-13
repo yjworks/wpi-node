@@ -91,6 +91,10 @@ Napi::Value _softPwmCreate(const Napi::CallbackInfo& info) {
   int pin = info[0].As<Napi::Number>().Int32Value();
   int minRange = info[1].As<Napi::Number>().Int32Value();
   int maxRange = info[2].As<Napi::Number>().Int32Value();
+  if (pin < 0 || pin >= 64) {
+    Napi::RangeError::New(env, "pin out of range (0-63)").ThrowAsJavaScriptException();
+    return env.Null();
+  }
   int ret = 0;
   softPwmCreate(pin, minRange, maxRange);
   
@@ -104,6 +108,10 @@ Napi::Value _softPwmWrite(const Napi::CallbackInfo& info) {
   //devOpen();
   int pin = info[0].As<Napi::Number>().Int32Value();
   int value = info[1].As<Napi::Number>().Int32Value();
+  if (pin < 0 || pin >= 64) {
+    Napi::RangeError::New(env, "pin out of range (0-63)").ThrowAsJavaScriptException();
+    return env.Null();
+  }
   int ret = 0;
   softPwmWrite(pin, value);
   
